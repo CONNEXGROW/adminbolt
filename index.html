@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bolt Appointments | Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px 30px;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .header h1 i {
+            margin-right: 12px;
+            font-size: 32px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .login-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: var(--light);
+            border-radius: 8px;
+        }
+        
+        .login-section p {
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+        
+        #login-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        #login-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        #login-button i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+        
+        th, td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        th {
+            background-color: var(--light);
+            font-weight: 600;
+            color: var(--dark);
+            position: sticky;
+            top: 0;
+        }
+        
+        tbody tr {
+            transition: var(--transition);
+        }
+        
+        tbody tr:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: var(--light-gray);
+        }
+        
+        .empty-state p {
+            font-size: 16px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading i {
+            font-size: 24px;
+            color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--gray);
+            font-size: 14px;
+            border-top: 1px solid var(--light-gray);
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .container {
+                width: 98%;
+                margin: 15px auto;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .content {
+                padding: 20px 15px;
+            }
+            
+            th, td {
+                padding: 12px 10px;
+                font-size: 14px;
+            }
+            
+            #login-button {
+                padding: 10px 20px;
+                font-size: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .header p {
+                font-size: 14px;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+                font-size: 13px;
+            }
+            
+            .table-container {
+                margin: 0 -15px;
+                width: calc(100% + 30px);
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-bolt"></i> Bolt Appointments</h1>
+            <p>Admin Panel for the Appointments</p>
+        </div>
+        
+        <div class="content">
+            <div class="login-section">
+                <p>Please login to access the appointment details</p>
+                <button id="login-button"><i class="fab fa-google"></i> Login with Google</button>
+            </div>
+            
+            <div class="table-container">
+                <table id="thesis-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Appointment Date</th>
+                            <th>Appointment Time</th>
+                            <th>Phone Number</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+                
+                <div id="empty-state" class="empty-state">
+                    <i class="far fa-calendar-alt"></i>
+                    <p>Login to view appointment details</p>
+                </div>
+                
+                <div id="loading" class="loading">
+                    <i class="fas fa-spinner"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            &copy; 2025 Bolt Appointments | All Rights Reserved
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAkDl3ckFSXDHlZpyR0s7IZ1UTSX8Z6hSY",
+            authDomain: "bolt-54408.firebaseapp.com",
+            projectId: "bolt-54408",
+            storageBucket: "bolt-54408.firebasestorage.app",
+            messagingSenderId: "88291790006",
+            appId: "1:88291790006:web:259387f2de1d7b164eaa17",
+            measurementId: "G-6YD4D3514J"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        
+        // DOM elements
+        const loginButton = document.getElementById('login-button');
+        const thesisTable = document.getElementById('thesis-table');
+        const tableBody = thesisTable.querySelector('tbody');
+        const emptyState = document.getElementById('empty-state');
+        const loading = document.getElementById('loading');
+        
+        // Hide table initially, show empty state
+        thesisTable.style.display = 'none';
+        emptyState.style.display = 'block';
+        
+        // Google login
+        loginButton.addEventListener('click', () => {
+            loading.style.display = 'block';
+            emptyState.style.display = 'none';
+            
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+                .then(result => {
+                    loginButton.innerHTML = '<i class="fas fa-check-circle"></i> Logged In';
+                    loginButton.disabled = true;
+                    loginButton.style.backgroundColor = '#4cc9f0';
+                    
+                    const idToken = result.user.getIdToken();
+                    idToken.then(token => {
+                        fetch('https://bolt-hmik.onrender.com/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ idToken: token })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Login successful:', data);
+                            fetchThesisDetails(token);
+                        })
+                        .catch(error => {
+                            console.error('Error logging in:', error);
+                            showError('Login failed. Please try again.');
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Error during Google login:', error);
+                    showError('Google login failed. Please try again.');
+                });
+        });
+
+        // Fetch thesis details with authentication
+        const fetchThesisDetails = (token) => {
+            loading.style.display = 'block';
+            
+            fetch('http://localhost:3000/thesis-details', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                return response.json();
+            })
+            .then(data => {
+                loading.style.display = 'none';
+                
+                if (data && data.length > 0) {
+                    thesisTable.style.display = 'table';
+                    emptyState.style.display = 'none';
+                    
+                    // Clear existing rows
+                    tableBody.innerHTML = '';
+                    
+                    // Add data rows
+                    data.forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${escapeHtml(item.name || '-')}</td>
+                            <td>${escapeHtml(item.email || '-')}</td>
+                            <td>${escapeHtml(item.appointmentDate || '-')}</td>
+                            <td>${escapeHtml(item.appointmentTime || '-')}</td>
+                            <td>${escapeHtml(item.phoneNumber || '-')}</td>
+                            <td>${escapeHtml(item.message || '-')}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    // No data
+                    thesisTable.style.display = 'none';
+                    emptyState.style.display = 'block';
+                    emptyState.innerHTML = `
+                        <i class="far fa-calendar-times"></i>
+                        <p>No appointment data available</p>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching thesis details:', error);
+                loading.style.display = 'none';
+                showError('Failed to fetch appointment data');
+            });
+        };
+        
+        // Helper function to show errors
+        const showError = (message) => {
+            loading.style.display = 'none';
+            emptyState.style.display = 'block';
+            emptyState.innerHTML = `
+                <i class="fas fa-exclamation-circle" style="color: #dc3545;"></i>
+                <p>${message}</p>
+            `;
+        };
+        
+        // Helper function to escape HTML to prevent XSS
+        const escapeHtml = (unsafe) => {
+            if (typeof unsafe !== 'string') return unsafe;
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        };
+        
+        // Check if user is already logged in
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                loginButton.innerHTML = '<i class="fas fa-check-circle"></i> Logged In';
+                loginButton.disabled = true;
+                loginButton.style.backgroundColor = '#4cc9f0';
+                
+                user.getIdToken().then(token => {
+                    fetchThesisDetails(token);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
