@@ -355,7 +355,7 @@
         const fetchThesisDetails = (token) => {
             loading.style.display = 'block';
             
-            fetch('http://localhost:3000/thesis-details', {
+            fetch('https://bolt-hmik.onrender.com/thesis-details', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
